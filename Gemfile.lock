@@ -1,9 +1,17 @@
 --- 
 dependencies: 
+  fakeweb: 
+    group: 
+    - :test
+    version: ">= 0"
   rspec: 
     group: 
     - :test
     version: = 2.0.0.beta.4
+  randexp: 
+    group: 
+    - :test
+    version: ">= 0"
   resourceful: 
     group: 
     - :default
@@ -13,14 +21,26 @@ dependencies:
     - :default
     version: ">= 0"
 specs: 
+- ZenTest: 
+    version: 4.2.1
+- RubyInline: 
+    version: 3.8.4
+- sexp_processor: 
+    version: 3.0.3
+- ParseTree: 
+    version: 3.0.4
 - addressable: 
     version: 2.1.1
+- fakeweb: 
+    version: 1.2.8
 - httpauth: 
     version: "0.1"
 - nokogiri: 
     version: 1.4.1
 - options: 
     version: 2.1.1
+- randexp: 
+    version: 0.1.5
 - resourceful: 
     version: 1.0.1
 - rspec-core: 
@@ -31,7 +51,7 @@ specs:
     version: 2.0.0.beta.4
 - rspec: 
     version: 2.0.0.beta.4
-hash: a43d56f8d314697489de4c828fd52b7f4bdfc00c
+hash: a8020b14fc570f9a3b5bbf74cf62cab4996fa988
 sources: 
 - Rubygems: 
     uri: http://gemcutter.org

@@ -1,5 +1,6 @@
 require "resourceful"
 require "alexandria/resourceful_ext"
+require "alexandria/resourceful_backend"
 require "alexandria/constants"
 
 # Alexandria is a library for connecting to APIs that work
@@ -16,15 +17,16 @@ require "alexandria/constants"
 # around the raw data access.
 class Alexandria
 
-  AUTH_URL = "https://www.google.com/accounts/ClientLogin"
-  CONTENT_TYPE = "application/x-www-form-urlencoded"
-
   # Create a new instance of the Alexandria connector.
   #
   # @param [String] user the username of the Google account
   # @param [String] password the password of the Google account
-  def initialize(user, password)
-    @user, @password = user, password
+  # @param [optional, Object] backend the backend to use to
+  #   connect to the Google service. By default, this uses
+  #   the ResourcefulBackend, which uses the resourceful
+  #   library to connect to Google over HTTP.
+  def initialize(user, password, backend = ResourcefulBackend.new)
+    @user, @password, @backend = user, password, backend
     @tokens = {}
   end
 
@@ -33,7 +35,7 @@ class Alexandria
   # a second time with the same service will always return
   # the same token.
   #
-  # @param [String, Symbol] service the name of the service.
+  # @providedaram [String, Symbol] service the name of the service.
   #   If a String is provided, it must be a valid internal
   #   Google service name. If a Symbol is provided, it must
   #   be a valid service key. Alexandria defines the valid
@@ -45,31 +47,14 @@ class Alexandria
     service = Alexandria::ServiceNames[service]
 
     @tokens[service] ||= begin
-      data = body_parameters(
-        :accountType => "HOSTED_OR_GOOGLE",
-        :Email => @user,
-        :Passwd => @password,
-        :service => service,
-        :source => "alexandria"
+      @backend.authenticate(
+        "accountType" => "HOSTED_OR_GOOGLE",
+        "Email" => @user,
+        "Passwd" => @password,
+        "service" => service,
+        "source" => "alexandria"
       )
-
-      http     = Resourceful::HttpAccessor.new
-      resource = http.resource(AUTH_URL)
-      response = resource.post(data, :content_type => CONTENT_TYPE)
-      response.body.match(/^Auth=([^\n]*)/)[1]
     end
-  rescue Resourceful::UnsuccessfulHttpRequestError => e
-    response = e.http_response.body
-    code     = response.match(/^Error=([^\n]*)/)[1]
-    raise AuthenticationFailure.new(code)
-  end
-
-private
-
-  def body_parameters(hash)
-    uri = Addressable::URI.new
-    uri.query_values = hash
-    uri.query
   end
   
 end

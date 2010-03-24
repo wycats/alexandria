@@ -12,12 +12,12 @@ class Alexandria
 
     def message
       "Google responded to your authentication request with the " \
-      "code #{@code}, which is describes as `#{@error}`"
+      "code #{@code}, which it describes as `#{@error}`"
     end
   end
 
   module FailureCodes
-    BadAuthentication  = "The login request used a username or password that is not recognized. NOTE: This may also result from having specified an invalid service"
+    BadAuthentication  = "The login request used a username or password that is not recognized."
     NotVerified        = "The account email address has not been verified. The user will need to access their Google account directly to resolve the issue before logging in using a non-Google application."
     TermsNotAgreed     = "The user has not agreed to terms. The user will need to access their Google account directly to resolve the issue before logging in using a non-Google application."
     CaptchaRequired    = "A CAPTCHA is required. (A response with this error code will also contain an image URL and a CAPTCHA token.)"
