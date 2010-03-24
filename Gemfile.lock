@@ -1,0 +1,37 @@
+--- 
+dependencies: 
+  rspec: 
+    group: 
+    - :test
+    version: = 2.0.0.beta.4
+  resourceful: 
+    group: 
+    - :default
+    version: ">= 0"
+  nokogiri: 
+    group: 
+    - :default
+    version: ">= 0"
+specs: 
+- addressable: 
+    version: 2.1.1
+- httpauth: 
+    version: "0.1"
+- nokogiri: 
+    version: 1.4.1
+- options: 
+    version: 2.1.1
+- resourceful: 
+    version: 1.0.1
+- rspec-core: 
+    version: 2.0.0.beta.4
+- rspec-expectations: 
+    version: 2.0.0.beta.4
+- rspec-mocks: 
+    version: 2.0.0.beta.4
+- rspec: 
+    version: 2.0.0.beta.4
+hash: a43d56f8d314697489de4c828fd52b7f4bdfc00c
+sources: 
+- Rubygems: 
+    uri: http://gemcutter.org
