@@ -52,7 +52,28 @@ class Alexandria
       attr_accessor name
     end
 
+    # @todo generate these
+    #
+    # @param [Symbol] name The name of the attribute you are creating
+    # @param [String] selector A selector that describes how to get
+    #   to the location of this attribute directly underneath the
+    #   root. This defaults to the #name. If you want to specify that
+    #   the attribute is anywhere below the root, use "* selector"
+    # @param [String] attribute The name of the XML attribute that
+    #   contains this attribute. If this is left empty, the text
+    #   contents of the node itself will be used
     type(:string) { |text| text }
+
+    # @todo generate these
+    #
+    # @param [Symbol] name The name of the attribute you are creating
+    # @param [String] selector A selector that describes how to get
+    #   to the location of this attribute directly underneath the
+    #   root. This defaults to the #name. If you want to specify that
+    #   the attribute is anywhere below the root, use "* selector"
+    # @param [String] attribute The name of the XML attribute that
+    #   contains this attribute. If this is left empty, the text
+    #   contents of the node itself will be used
     type(:time)   { |text| Time.parse(text) }
 
     # @param [String, Nokogiri::XML::Document] xml A valid XML document
