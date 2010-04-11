@@ -1,6 +1,5 @@
 require "date"
 require "nokogiri"
-require "active_support/core_ext/class/attribute"
 
 class Alexandria
   class ResponseDocument
@@ -52,7 +51,8 @@ class Alexandria
     # of a child node:
     #
     # @param [Symbol] name The name of the child model
-    # @param [Class] type The class of the child model
+    # @param [Class] type The class of the child model. By default
+    #   this is #{parent_name}::#{name.to_s.camelize}
     # @param [String] selector The selector, relative to the root
     #   of the current model, that describes how to get to
     #   the location of the node containing the child model's
@@ -87,7 +87,10 @@ class Alexandria
     #
     # If the root node does not exist, the child model's method
     # on the parent will return nil
-    def self.has_one(name, type, selector = name.to_s)
+    def self.has_one(name, type = nil, selector = name.to_s)
+      inflect = ActiveSupport::Inflector
+      type ||= inflect.constantize("#{parent_name}::#{inflect.camelize(name.to_s)}")
+
       self.children ||= []
       self.children << [name, type, selector]
       attr_accessor name

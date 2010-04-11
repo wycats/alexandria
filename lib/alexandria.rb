@@ -1,5 +1,12 @@
 require "time"
 require "resourceful"
+
+require "active_support"
+require "active_support/core_ext/class/attribute"
+require "active_support/core_ext/module/introspection"
+require "active_support/inflector/inflections"
+require "active_support/inflections"
+
 require "alexandria/resourceful_backend"
 require "alexandria/constants"
 require "alexandria/response_document"
