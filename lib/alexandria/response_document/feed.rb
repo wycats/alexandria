@@ -11,7 +11,7 @@ class Alexandria
     time    :published
     time    :updated
 
-    has_one :author, Author,     "author"
-    has_one :category, Category, "category"
+    has_one :author, Author
+    has_one :category, Category
   end
 end

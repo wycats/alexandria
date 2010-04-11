@@ -36,7 +36,7 @@ class Alexandria
   # a second time with the same service will always return
   # the same token.
   #
-  # @providedaram [String, Symbol] service the name of the service.
+  # @param [String, Symbol] service the name of the service.
   #   If a String is provided, it must be a valid internal
   #   Google service name. If a Symbol is provided, it must
   #   be a valid service key. Alexandria defines the valid

@@ -10,6 +10,7 @@ class Alexandria
     class_attribute :types
     class_attribute :type_attributes
     class_attribute :root_name
+
     self.types = {}
     self.type_attributes = Hash.new {|h,k| h[k] = [] }
     self.root_name = "feed"
@@ -46,7 +47,47 @@ class Alexandria
       self.types = self.types.merge(type => block)
     end
 
-    def self.has_one(name, type, selector)
+    # Define a child model. For instance, a Feed has one Author.
+    # This is useful if a single node can model the attributes
+    # of a child node:
+    #
+    # @param [Symbol] name The name of the child model
+    # @param [Class] type The class of the child model
+    # @param [String] selector The selector, relative to the root
+    #   of the current model, that describes how to get to
+    #   the location of the node containing the child model's
+    #   information. This defaults to the name, converted to
+    #   a String.
+    #
+    # @return
+    #
+    # @example
+    #   <feed>
+    #     <author>
+    #       <name>Yehuda Katz</name>
+    #       <email>wycats@gmail.com</name>
+    #     </author>
+    #   </feed>
+    #
+    # @example
+    #   class Feed
+    #     has_one :author, Author
+    #   end
+    #
+    # @example
+    #   class Author
+    #     string :name
+    #     string :email
+    #   end
+    #
+    # @example
+    #   feed = Feed.new(xml)
+    #   feed.author.name  #=> "Yehuda Katz"
+    #   feed.author.email #=> "wycats@gmail.com"
+    #
+    # If the root node does not exist, the child model's method
+    # on the parent will return nil
+    def self.has_one(name, type, selector = name.to_s)
       self.children ||= []
       self.children << [name, type, selector]
       attr_accessor name
