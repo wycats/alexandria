@@ -1,7 +1,8 @@
+require "time"
 require "resourceful"
-require "alexandria/resourceful_ext"
 require "alexandria/resourceful_backend"
 require "alexandria/constants"
+require "alexandria/response_document"
 
 # Alexandria is a library for connecting to APIs that work
 # with the Google Data protocol.
@@ -56,5 +57,9 @@ class Alexandria
       )
     end
   end
-  
+
+  def get(service, url, params = {})
+    token = token_for(service)
+    @backend.authenticated_get(token, url, params)
+  end
 end

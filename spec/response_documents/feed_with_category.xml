@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='utf-8'?>
+<feed xmlns='http://www.w3.org/2005/Atom' xmlns:gd='http://schemas.google.com/g/2005' gd:etag='W/"D08FQn8-eil7ImA9WxZbFEw."'>
+  <title>Foo</title>
+  <updated>2006-01-23T16:28:05-08:00</updated>
+  <id>http://www.example.com/myFeed</id>
+  <category term="foo" scheme="bar" />
+  <author>
+    <name>Jo March</name>
+  </author>
+  <link href='/myFeed' rel='self'/>
+  <entry gd:etag='"FkkOQgZGeip7ImA6WhVR"'>
+    <id>http://www.example.com/id/1</id> 
+    <link rel='edit' href='http://example.com/myFeed/1/'/> 
+    <updated>2006-01-23T16:28:05-08:00</updated>
+    <author>
+      <name>Elizabeth Bennet</name>
+      <email>liz@gmail.com</email>
+    </author>
+    <title type='text'>Entry 1</title>
+    <content type='text'>This is my first entry.</content>
+  </entry>
+</feed>

@@ -20,7 +20,7 @@ class Alexandria
     # @option params [String] Email An email address or
     #   Google ID
     # @option params [String] Passwd The user's password
-    # @option params [String] service The service to 
+    # @option params [String] service The service to
     #   authenticate for.
     # @option params [String] source A short string
     #   identifying the application
@@ -33,15 +33,31 @@ class Alexandria
       data = body_parameters(params)
 
       resource = @http.resource(AUTH_URL)
-      response = resource.post(data, :content_type => CONTENT_TYPE)
+      response = resource.post(data, headers)
       response.body.match(/^Auth=([^\n]*)/)[1]
     rescue Resourceful::UnsuccessfulHttpRequestError => e
       response = e.http_response.body
+      # TODO Handle other kinds of output
       code     = response.match(/^Error=([^\n]*)/)[1]
       raise AuthenticationFailure.new(code)
     end
 
+    def authenticated_get(token, url, params)
+      data = body_parameters(params)
+
+      resource = @http.resource(url)
+      full_headers = headers.merge("Authorization" => "GoogleLogin auth=\"#{token}\"")
+      resource.get(full_headers)
+    end
+
   private
+
+    def headers
+      {
+        "Content-Type" => CONTENT_TYPE,
+        "GData-Version" => "2"
+      }
+    end
 
     def body_parameters(hash)
       uri = Addressable::URI.new

@@ -1,5 +1,20 @@
+require "artifice"
+require "sinatra"
+
+class FakeGoogle < Sinatra::Base
+  post "/accounts/ClientLogin" do
+    if params["Passwd"] == "s3kr17"
+      "Auth=#{/\w{224}/.gen}"
+    else
+      status 403
+      "Error=BadAuthentication"
+    end
+  end
+end
+
 require "spec_helper"
-require "fakeweb"
+
+Artifice.activate_with(FakeGoogle.new)
 
 describe "With the Alexandria::ResourcefulBackend" do
   before do |example|
@@ -7,28 +22,14 @@ describe "With the Alexandria::ResourcefulBackend" do
     url           = backend_klass::AUTH_URL
 
     @backend = backend_klass.new
-
-    p example.running_example.class
-
-    if example.running_example.metadata[:valid]
-      FakeWeb.register_uri(url,
-        :body => "Auth=#{/\w{224}/.gen}", :status => 200)
-    else
-      FakeWeb.register_uri(url,
-        :body => "Error=BadAuthentication", :status => 403)
-    end
   end
 
-  after do
-    FakeWeb.clean_registry
-  end
-
-  it "using valid credentials, it returns a token", :valid => true do
+  it "using valid credentials, it returns a token" do
     response = @backend.authenticate(Alexandria::TestBackend.valid_params)
     response.should be_kind_of(String)
   end
 
-  it "using invalid credentials, it raises", :valid => false do
+  it "using invalid credentials, it raises" do
     params = Alexandria::TestBackend.valid_params.merge("Passwd" => "s3krit")
 
     lambda do
